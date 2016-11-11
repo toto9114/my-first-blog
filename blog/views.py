@@ -6,7 +6,7 @@ from rest_framework import serializers, mixins
 from rest_framework.generics import GenericAPIView
 from json import dumps, loads, JSONEncoder, JSONDecoder
 from django.forms.models import model_to_dict
-from django.http import JsonResponse
+from django.http import HttpResponse
 # Create your views here.
 from .models import Post
 
@@ -19,12 +19,15 @@ class PostSerializer(serializers.ModelSerializer):
 
 class blog_page(APIView):
 
-    def get(self, request, fromat=None):
-        post = Post.objects.filter(id=1).first()
+    def get(self, request, *args, **kwargs):
+        post = Post.objects.filter(id=request.GET['id']).first()
         # serializer = PostSerializer(post, many=True)
-        post_dict = model_to_dict(post)
+        response = dict()
+        response['id'] = post.id
+        response['title'] = post.getTitle()
+        response['text'] = post.getText()
 
-        return JsonResponse(post_dict, safe=False).content
+        return HttpResponse(json.dumps(response))
 
 
 class blog_api(GenericAPIView, mixins.ListModelMixin):
