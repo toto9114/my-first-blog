@@ -27,13 +27,13 @@ class blog_page(APIView):
         return HttpResponse(json.dumps(response))
 
     def post(self, request, *args, **kwargs):
-        post = request.POST()
-        post.publish()
-        response = dict()
-        response['id'] = post.id
-        response['title'] = post.getTitle()
-        response['text'] = post.getText()
-        return HttpResponse(json.dumps(response))
+        data = self.request.POST
+        post = Post()
+        post.author = request.user
+        post.title = data.get('title')
+        post.text = data.get('text')
+        Post.publish(post)
+        return HttpResponse(json.dumps(data))
 
 
 class blog_api(GenericAPIView, mixins.ListModelMixin):
