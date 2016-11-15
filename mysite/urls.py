@@ -15,18 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from blog import views
-from blog.views import blog_page, blog_api
 from rest_framework_swagger.views import get_swagger_view
 import json
 
-schema_view = get_swagger_view(title='Pastebin API')
+schema_view = get_swagger_view(title='Jihun Lee API')
 
 urlpatterns = [
-    url(r'^rest-api/', include('rest_framework.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^blog/', blog_page.as_view()),
-    url(r'^api/blog/', blog_api.as_view()),
+    url(r'', include('blog.urls')),
     url(r'^$', schema_view)
 ]

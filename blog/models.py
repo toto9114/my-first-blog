@@ -1,10 +1,12 @@
 from django.db import models
 from django.utils import timezone
-import json
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters.html import HtmlFormatter
+from pygments import highlight
 
 
 class Post(models.Model):
-    author = models.ForeignKey('auth.User')
+    owner = models.ForeignKey('auth.User', related_name='blog', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(
@@ -12,15 +14,3 @@ class Post(models.Model):
     published_date = models.DateTimeField(
         blank=True, null=True)
 
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
-
-    def getTitle(self):
-        return self.title
-
-    def getText(self):
-        return self.text
-
-    def getAuthor(self):
-        return self.author
