@@ -23,6 +23,8 @@ schema_view = get_swagger_view(title='Jihun Lee API')
 urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'', include('blog.urls')),
-    url(r'^$', schema_view)
+    url(r'blog/', include('blog.urls')),
+    url(r'api/', include('api.urls')),
+    url(r'^$', schema_view),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]

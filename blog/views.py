@@ -16,58 +16,17 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework import permissions
 from .permissions import IsOwnerOrReadOnly
 from rest_framework import viewsets
+from oauth2_provider.ext.rest_framework import TokenHasReadWriteScope, TokenHasScope
 
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+    permission_classes = (permissions.IsAuthenticated,
                           IsOwnerOrReadOnly,)
 
 
-# class PostList(GenericAPIView, mixins.ListModelMixin
-#                , mixins.CreateModelMixin):
-#     queryset = Post.objects.all()
-#     serializer_class = PostSerializer
-#     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-#
-#     def perform_create(self, serializer):
-#         serializer.save(owner=self.request.user)
-#
-#     def get(self, request, *args, **kwargs):
-#         return self.list(self, request, *args, **kwargs)
-#
-#     def post(self, request, *args, **kwargs):
-#         return self.create(request, *args, **kwargs)
-#
-#
-# class PostDetail(GenericAPIView, mixins.RetrieveModelMixin
-#                   , mixins.UpdateModelMixin
-#                   , mixins.DestroyModelMixin):
-#     queryset = Post.objects.all()
-#     serializer_class = PostSerializer
-#     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-#                           IsOwnerOrReadOnly,)
-#
-#     def get(self,request, *args, **kwargs):
-#         return self.retrieve(request, *args, **kwargs)
-#
-#     def put(self, request, *args, **kwargs):
-#         return self.update(request, *args, **kwargs)
-#
-#     def delete(self, request, *args, **kwargs):
-#         return self.destroy(request, *args, **kwargs)
-
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-# class UserList(generics.ListAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#
-#
-# class UserDetail(generics.RetrieveAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-
+    permission_classes = [permissions.IsAuthenticated]
